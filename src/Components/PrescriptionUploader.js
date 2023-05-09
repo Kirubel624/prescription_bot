@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import OrderTrackingApp from './Maptracking';
 
 const { Option } = Select;
 
@@ -9,7 +10,7 @@ const PrescriptionUploader = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchingMedicine, setSearchingMedicine] = useState(false);
   const [deliveryOption, setDeliveryOption] = useState(null);
-
+const [mapShow,setmapShow]=useState(false)
   const handleUpload = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -46,6 +47,8 @@ const PrescriptionUploader = () => {
     // Perform any necessary logic for confirming the delivery option
     // and proceed to the map tracking part
     setShowModal(false);
+    setmapShow(true)
+    setPrescriptions([])
   };
 
   return (
@@ -60,7 +63,7 @@ const PrescriptionUploader = () => {
       className='bg-[#17CFC0]'
         type="primary"
         onClick={handleSendPrescription}
-        disabled={prescriptions.length === 0}
+        disabled={prescriptions?.length === 0}
         style={{ marginTop: '1rem' }}
       >
         Send Prescription
@@ -109,6 +112,7 @@ const PrescriptionUploader = () => {
           </>
         )}
       </Modal>
+     {mapShow&& <OrderTrackingApp/>}
     </div>
   );
 };

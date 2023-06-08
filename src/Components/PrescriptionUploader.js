@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch, Radio, Table } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import OrderTrackingApp from './Maptracking';
-import { convertToAmharic } from "amharic-converter";
+// import { convertToAmharic } from "amharic-converter";
 const { Option } = Select;
 
 const PrescriptionUploader = () => {
@@ -18,13 +18,64 @@ const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
 const [language, setLanguage] = useState('amharic');
 
-const handleInputChange = (event) => {
-  const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;
-  setAmharicText(convertedText);
+// const handleInputChange = (event) => {
+//   const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;
+//   setAmharicText(convertedText);
+// };
+const convertToAmharic = (value)=>{
+if(value=="Delivery"&&language=="amharic"){
+  setOrderSummary({...orderSummary, deliveryOption:"ዴሊቨሪ"})
+}
+if(value=="e-birr"&&language=="amharic"){
+  setOrderSummary({...orderSummary, paymentOption:"ኢ-ብር"})
+}
+}
+const convertToAmharicDelivery = (value) => {
+  if (value === 'Delivery') {
+    return 'ዴሊቨሪ';
+  }if (value === 'Self pickup') {
+    return 'በአካል መቀበል';
+  }
+  return value;
 };
 
-const handleLanguageToggle = () => {
-  const newLanguage = language === 'amharic' ? 'english' : 'amharic';
+const convertToAmharicPayment = (value) => {
+  if (value === 'e-birr') {
+    return 'ኢ-ብር';
+  } if (value === 'Chapa') {
+    return 'ቻፓ';
+  } if (value === 'CBE Birr') {
+    return 'ሲቢኢ ብር';
+  } if (value === 'Telebirr') {
+    return 'ቴሌብር';
+  }
+  return value;
+};
+
+const convertToEnglishDelivery = (value) => {
+  if (value === 'ዴሊቨሪ') {
+    return 'Delivery';
+  }if (value === 'በአካል መቀበል') {
+    return 'Self pickup';
+  }
+  return value;
+};
+
+const convertToEnglishPayment = (value) => {
+  if (value === 'ኢ-ብር') {
+    return 'e-birr';
+  }if (value === 'ቻፓ') {
+    return 'Chapa';
+  } if (value === 'ሲቢኢ ብር') {
+    return 'CBE Birr';
+  } if (value === 'ቴሌብር') {
+    return 'Telebirr';
+  }
+  return value;
+};
+const handleLanguageToggle = (value) => {
+  const newLanguage = value === 'amharic' ? 'english' : 'amharic';
+  console.log("new language",newLanguage);
   setLanguage(newLanguage);
 };
   const handleUpload = (file) => {
@@ -100,15 +151,15 @@ setmapShow(true)
     },
   ];
 
-const dataExpt = [
+const data = [
   {
     key: '1',
-    orderNumber:language=='amharic'?convertToAmharic(orderSummary.orderNumber):orderSummary.orderNumber,
-    deliveryOption: language=='amharic'?convertToAmharic(orderSummary.deliveryOption):orderSummary.deliveryOption,
-    paymentOption: language=='amharic'?convertToAmharic(orderSummary.paymentOption):orderSummary.paymentOption,
+    orderNumber:orderSummary.orderNumber,
+    deliveryOption: language=='amharic'?convertToAmharicDelivery(orderSummary.deliveryOption):convertToEnglishDelivery(orderSummary.deliveryOption),
+    paymentOption: language=='amharic'?convertToAmharicPayment(orderSummary.paymentOption):convertToEnglishPayment(orderSummary.paymentOption),
   },
 ];
-const data = [
+const datas = [
   {
     key: '1',
     orderNumber:orderSummary.orderNumber,
@@ -117,13 +168,14 @@ const data = [
   },
 ];
 console.log("Order summary",data);
-console.log("Converted to amharic",convertToAmharic(orderSummary.orderNumber));
+console.log("Converted to amharic",convertToAmharic(orderSummary.deliveryOption));
 return (
     <div>
       <div className='flex items-end justify-end pt-10 pr-10'>
-      <Button className='bg-[#17CFC0]' type='primary' onClick={handleLanguageToggle}>
-          {language === 'amharic' ? 'አማርኛ' : 'English'}
-        </Button>
+      <Select defaultValue={language} onChange={handleLanguageToggle}>
+  <Option value="english">አማርኛ</Option>
+  <Option value="amharic">English</Option>
+</Select>
       </div>
     <div className="mt-10 flex flex-col justify-between items-center">
       <Upload
@@ -209,9 +261,9 @@ return (
           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/>
           <Radio className='flex flex-row' value={language=='amharic'?`ቴሌብር`:'Telebirr'}>{language=='amharic'?`ቴሌብር`:'Telebirr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/>
-           <Radio value={language=='amharic'?`ሲቢኢ ቢር`:'CBE Birr'}>{language=='amharic'?`ሲቢኢ ቢር`:'CBE Birr'}</Radio></div>
+           <Radio value={language=='amharic'?`ሲቢኢ ብር`:'CBE Birr'}>{language=='amharic'?`ሲቢኢ ብር`:'CBE Birr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/>
-           <Radio value={language=='amharic'?`ኢ-ቢር`:'e-birr'}>{language=='amharic'?`ኢ-ቢር`:'e-birr'}</Radio></div>
+           <Radio value={language=='amharic'?`ኢ-ብር`:'e-birr'}>{language=='amharic'?`ኢ-ብር`:'e-birr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={65} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207125/op4nimn67dnvgoj0ocvr.png"/>
            <Radio value={language=='amharic'?`ቻፓ`:'Chapa'}>{language=='amharic'?`ቻፓ`:'Chapa'}</Radio></div>
         </Radio.Group>

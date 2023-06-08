@@ -188,7 +188,7 @@ return (
           </div>
         ) : (
           <>
-            <p>            {language === 'amharic' ? 'መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-' : 'Medicine found! Choose delivery option:'} አጥፋ
+            <p>            {language === 'amharic' ? 'መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-' : 'Medicine found! Choose delivery option:'}
 </p>
             <Select defaultValue={language=='amharic'?`በአካል መቀበል`:'Self pickup'} onChange={handleDeliveryOptionChange}>
               <Option value={language=='amharic'?`በአካል መቀበል`:'Self pickup'}>{language=='amharic'?`በአካል መቀበል`:'Self pickup'}</Option>

@@ -16,7 +16,7 @@ const PrescriptionUploader = () => {
 const [orderSummary, setOrderSummary] = useState({orderNumber:"",deliveryOption:"",paymentOption:""});
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
-const [language, setLanguage] = useState('amharic');
+const [language, setLanguage] = useState('Amharic');
 
 // const handleInputChange = (event) => {
 //   const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;

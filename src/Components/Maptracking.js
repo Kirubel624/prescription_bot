@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Import marker icon images
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// Fix marker icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 const OrderTrackingApp = () => {
-  const [orderLocation, setOrderLocation] = useState([51.505, -0.09]);
+  const [orderLocation, setOrderLocation] = useState([9.0222, 38.7465]); // Addis Ababa coordinates
 
   useEffect(() => {
     const interval = setInterval(() => {

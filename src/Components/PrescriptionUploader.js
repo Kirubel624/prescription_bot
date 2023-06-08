@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch } from 'antd';
+import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch, Radio } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import OrderTrackingApp from './Maptracking';
 import { convertToAmharic } from "amharic-converter";
@@ -8,8 +8,12 @@ const { Option } = Select;
 const PrescriptionUploader = () => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalPayment, setShowModalPayment] = useState(false);
+
   const [searchingMedicine, setSearchingMedicine] = useState(false);
   const [deliveryOption, setDeliveryOption] = useState(null);
+  const [paymentOption, setPaymentOption] = useState(null);
+
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
 const handleInputChange = (event) => {
@@ -53,9 +57,18 @@ const handleInputChange = (event) => {
     // Perform any necessary logic for confirming the delivery option
     // and proceed to the map tracking part
     setShowModal(false);
-    setmapShow(true)
+    setShowModalPayment(true)
     setPrescriptions([])
   };
+  const handlePaymentoption=(value)=>{
+  setPaymentOption(value)
+      }
+  const handlePaymentConfirmation=()=>{
+setShowModalPayment(false)
+setmapShow(true)
+    setPrescriptions([])
+
+  }
 
   return (
     <div>
@@ -100,7 +113,7 @@ const handleInputChange = (event) => {
       />
       
       <Modal
-        title="Medicine Search"
+        title="መድህኒት ፈልግ"
         visible={showModal}
         onCancel={() => setShowModal(false)}
         onOk={handleConfirmDelivery}
@@ -121,6 +134,21 @@ const handleInputChange = (event) => {
             </Select>
           </>
         )}
+      </Modal>
+      <Modal
+        title="ክፍያ አማራጭ"
+        visible={showModalPayment}
+        onCancel={() => setShowModalPayment(false)}
+        onOk={handlePaymentConfirmation}
+        okButtonProps={{ disabled: !paymentOption, style: { backgroundColor: '#17CFC0', color: 'white' } }}
+        closable={!paymentOption}
+      >
+        <Radio.Group onChange={handlePaymentoption}>
+          <Radio value="telebirr">ቴሌብር</Radio>
+          <Radio value="cbe-birr">ሲቢኢ ቢር</Radio>
+          <Radio value="e-birr">ኢ-ቢር</Radio>
+          <Radio value="chapa-her">ቻፓ </Radio>
+        </Radio.Group>
       </Modal>
      {mapShow&& <OrderTrackingApp/>}
     </div></div>

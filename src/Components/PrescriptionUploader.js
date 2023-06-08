@@ -16,7 +16,7 @@ const PrescriptionUploader = () => {
 const [orderSummary, setOrderSummary] = useState({orderNumber:"",deliveryOption:"",paymentOption:""});
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
-const [language, setLanguage] = useState('Amharic');
+const [language, setLanguage] = useState('amharic');
 
 // const handleInputChange = (event) => {
 //   const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;
@@ -172,7 +172,7 @@ console.log("Converted to amharic",convertToAmharic(orderSummary.deliveryOption)
 return (
     <div>
       <div className='flex items-end justify-end pt-10 pr-10'>
-      <Select defaultValue={language} onChange={handleLanguageToggle}>
+      <Select defaultValue="አማርኛ" onChange={handleLanguageToggle}>
   <Option value="english">አማርኛ</Option>
   <Option value="amharic">English</Option>
 </Select>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch, Radio } from 'antd';
+import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch, Radio, Table } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import OrderTrackingApp from './Maptracking';
 import { convertToAmharic } from "amharic-converter";
@@ -74,7 +74,35 @@ setShowModalPayment(false)
 setmapShow(true)
     setPrescriptions([])
   }
-console.log("order summary",orderSummary);
+
+
+const columns = [
+  {
+    title: 'ትዕዛዝ ቁጥር',
+    dataIndex: 'orderNumber',
+    key: 'orderNumber',
+  },
+  {
+    title: 'ትዕዛዘ መቀበያ አማራጭ',
+    dataIndex: 'deliveryOption',
+    key: 'deliveryOption',
+  },
+  {
+    title: 'የክፈያ አማራጭ',
+    dataIndex: 'paymentOption',
+    key: 'paymentOption',
+  },
+];
+
+const data = [
+  {
+    key: '1',
+    orderNumber: orderSummary.orderNumber,
+    deliveryOption: orderSummary.deliveryOption,
+    paymentOption: orderSummary.paymentOption,
+  },
+];
+console.log("Order summary",data);
   return (
     <div>
       {/* <div className='flex items-end justify-end pt-10 pr-10'>
@@ -120,12 +148,8 @@ console.log("order summary",orderSummary);
   />
 ) : (
   mapShow && (
-    <div className='flex w-full flex-col items-start justify-center pl-[24.5vw] pt-4 pb-4'>
-      <React.Fragment>
-        <div>ትዕዛዝ ቁጥር: {orderSummary.orderNumber}</div>
-        <div>ትዕዛዘ መቀበያ አማራጭ: {orderSummary.deliveryOption}</div>
-        <div>የክፈያ አማራጭ: {orderSummary.paymentOption}</div>
-      </React.Fragment>
+    <div className='flex w-full flex-col items-center justify-center p-4'>
+      <Table columns={columns} dataSource={data} pagination={false} />
     </div>
   )
 )}
@@ -147,9 +171,9 @@ console.log("order summary",orderSummary);
         ) : (
           <>
             <p>መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-</p>
-            <Select value="self-pickup" defaultValue="self-pickup" onChange={handleDeliveryOptionChange}>
-              <Option value="self-pickup">በአካል መቀበል</Option>
-              <Option value="delivery">ዴሊቨሪ</Option>
+            <Select defaultValue="በአካል መቀበል" onChange={handleDeliveryOptionChange}>
+              <Option value="በአካል መቀበል">በአካል መቀበል</Option>
+              <Option value="ዴሊቨሪ">ዴሊቨሪ</Option>
             </Select>
           </>
         )}
@@ -163,10 +187,14 @@ console.log("order summary",orderSummary);
         closable={!paymentOption}
       >
         <Radio.Group className="flex flex-wrap justify-evenly items-center" onChange={handlePaymentoption}>
-          <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/><Radio className='flex flex-row' value="telebirr">ቴሌብር</Radio></div>
-           <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/><Radio value="cbe-birr">ሲቢኢ ቢር</Radio></div>
-           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/><Radio value="e-birr">ኢ-ቢር</Radio></div>
-           <div className='flex flex-col justify-center items-center'><img width={65} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207125/op4nimn67dnvgoj0ocvr.png"/><Radio value="chapa-her">ቻፓ </Radio></div>
+          <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/>
+          <Radio className='flex flex-row' value="ቴሌብር">ቴሌብር</Radio></div>
+           <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/>
+           <Radio value="ሲቢኢ ቢር">ሲቢኢ ቢር</Radio></div>
+           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/>
+           <Radio value="ኢ-ቢር">ኢ-ቢር</Radio></div>
+           <div className='flex flex-col justify-center items-center'><img width={65} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207125/op4nimn67dnvgoj0ocvr.png"/>
+           <Radio value="ቻፓ">ቻፓ</Radio></div>
         </Radio.Group>
       </Modal>
      {mapShow&& <OrderTrackingApp/>}

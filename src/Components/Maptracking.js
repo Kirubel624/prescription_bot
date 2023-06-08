@@ -17,9 +17,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-const OrderTrackingApp = () => {
+const OrderTrackingApp = ({language}) => {
   const [orderLocation, setOrderLocation] = useState([9.0222, 38.7465]); // Addis Ababa coordinates
-
+const [languageS, setLanguageS] = useState(language);
+// setLanguageS(language)
+console.log("lanaguage in map tracking", languageS)
   useEffect(() => {
     const interval = setInterval(() => {
       // Simulate movement of the order marker
@@ -33,7 +35,7 @@ const OrderTrackingApp = () => {
 
   return (
     <div className='overflow-clip w-[50vw] pb-10 '>
-      <h2>Order Tracking</h2>
+      <h2>{language === 'amharic' ? 'ትዕዛዘ መከታተያ' : 'Order Tracking'}</h2>
       <MapContainer center={orderLocation} zoom={13} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker position={orderLocation} />

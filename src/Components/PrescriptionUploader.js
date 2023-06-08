@@ -113,7 +113,7 @@ setmapShow(true)
       />
       
       <Modal
-        title="መድህኒት ፈልግ"
+        title="መድሃኒት ፈልግ"
         visible={showModal}
         onCancel={() => setShowModal(false)}
         onOk={handleConfirmDelivery}
@@ -123,7 +123,7 @@ setmapShow(true)
         {searchingMedicine ? (
           <div className="searching-medicine-container">
             <Spin size="large" />
-            <p>Searching for {prescriptions.length} medicines...</p>
+            <p>{prescriptions.length} መድሃኒት በመፈለግ ላይ...</p>
           </div>
         ) : (
           <>
@@ -143,11 +143,11 @@ setmapShow(true)
         okButtonProps={{ disabled: !paymentOption, style: { backgroundColor: '#17CFC0', color: 'white' } }}
         closable={!paymentOption}
       >
-        <Radio.Group onChange={handlePaymentoption}>
-          <Radio value="telebirr">ቴሌብር</Radio>
-          <Radio value="cbe-birr">ሲቢኢ ቢር</Radio>
-          <Radio value="e-birr">ኢ-ቢር</Radio>
-          <Radio value="chapa-her">ቻፓ </Radio>
+        <Radio.Group className="flex flex-wrap justify-evenly items-center" onChange={handlePaymentoption}>
+          <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/><Radio className='flex flex-row' value="telebirr">ቴሌብር</Radio></div>
+           <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/><Radio value="cbe-birr">ሲቢኢ ቢር</Radio></div>
+           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/><Radio value="e-birr">ኢ-ቢር</Radio></div>
+           <div className='flex flex-col justify-center items-center'><img width={65} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207125/op4nimn67dnvgoj0ocvr.png"/><Radio value="chapa-her">ቻፓ </Radio></div>
         </Radio.Group>
       </Modal>
      {mapShow&& <OrderTrackingApp/>}

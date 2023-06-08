@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col } from 'antd';
+import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch, Radio } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import OrderTrackingApp from './Maptracking';
-
+import { convertToAmharic } from "amharic-converter";
 const { Option } = Select;
 
 const PrescriptionUploader = () => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalPayment, setShowModalPayment] = useState(false);
+
   const [searchingMedicine, setSearchingMedicine] = useState(false);
   const [deliveryOption, setDeliveryOption] = useState(null);
+  const [paymentOption, setPaymentOption] = useState(null);
+
 const [mapShow,setmapShow]=useState(false)
+const [amharicText, setAmharicText] = useState("");
+const handleInputChange = (event) => {
+  const englishText = event.target.value;
+  const convertedText = convertToAmharic(englishText);
+  setAmharicText(convertedText);
+};
   const handleUpload = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -47,17 +57,30 @@ const [mapShow,setmapShow]=useState(false)
     // Perform any necessary logic for confirming the delivery option
     // and proceed to the map tracking part
     setShowModal(false);
-    setmapShow(true)
+    setShowModalPayment(true)
     setPrescriptions([])
   };
+  const handlePaymentoption=(value)=>{
+  setPaymentOption(value)
+      }
+  const handlePaymentConfirmation=()=>{
+setShowModalPayment(false)
+setmapShow(true)
+    setPrescriptions([])
+
+  }
 
   return (
+    <div>
+      {/* <div className='flex items-end justify-end pt-10 pr-10'>
+      <button className='' type="primary">Langauge</button>
+      </div> */}
     <div className="mt-10 flex flex-col justify-between items-center">
       <Upload
         beforeUpload={handleUpload}
         showUploadList={false}
       >
-        <Button className='bg-[#17CFC0]' icon={<UploadOutlined />} type="primary">Upload Prescription</Button>
+        <Button className='bg-[#17CFC0]' icon={<UploadOutlined />} type="primary">የህኪም ማዘዣ አስገባ</Button>
       </Upload>
       <Button
       className='bg-[#17CFC0]'
@@ -66,7 +89,7 @@ const [mapShow,setmapShow]=useState(false)
         disabled={prescriptions?.length === 0}
         style={{ marginTop: '1rem' }}
       >
-        Send Prescription
+        የህኪም ማዘዣ ላክ
       </Button>
       <List
         dataSource={prescriptions}
@@ -80,7 +103,7 @@ const [mapShow,setmapShow]=useState(false)
                 onClick={() => handleRemove(index)}
                 type="link"
               >
-                Remove
+                አጥፋ
               </Button>
             ]}
           >
@@ -90,7 +113,7 @@ const [mapShow,setmapShow]=useState(false)
       />
       
       <Modal
-        title="Medicine Search"
+        title="መድህኒት ፈልግ"
         visible={showModal}
         onCancel={() => setShowModal(false)}
         onOk={handleConfirmDelivery}
@@ -104,16 +127,31 @@ const [mapShow,setmapShow]=useState(false)
           </div>
         ) : (
           <>
-            <p>Medicine found! Choose a delivery option:</p>
+            <p>መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-</p>
             <Select defaultValue="self-pickup" onChange={handleDeliveryOptionChange}>
-              <Option value="self-pickup">Self Pickup</Option>
-              <Option value="delivery">Delivery</Option>
+              <Option value="self-pickup">በአካል መቀበል</Option>
+              <Option value="delivery">ዴሊቨሪ</Option>
             </Select>
           </>
         )}
       </Modal>
+      <Modal
+        title="ክፍያ አማራጭ"
+        visible={showModalPayment}
+        onCancel={() => setShowModalPayment(false)}
+        onOk={handlePaymentConfirmation}
+        okButtonProps={{ disabled: !paymentOption, style: { backgroundColor: '#17CFC0', color: 'white' } }}
+        closable={!paymentOption}
+      >
+        <Radio.Group onChange={handlePaymentoption}>
+          <Radio value="telebirr">ቴሌብር</Radio>
+          <Radio value="cbe-birr">ሲቢኢ ቢር</Radio>
+          <Radio value="e-birr">ኢ-ቢር</Radio>
+          <Radio value="chapa-her">ቻፓ </Radio>
+        </Radio.Group>
+      </Modal>
      {mapShow&& <OrderTrackingApp/>}
-    </div>
+    </div></div>
   );
 };
 

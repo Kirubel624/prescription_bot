@@ -32,7 +32,7 @@ const OrderTrackingApp = () => {
   }, [orderLocation]);
 
   return (
-    <div className='overflow-clip w-[50vw] '>
+    <div className='overflow-clip w-[50vw] pb-10 '>
       <h2>Order Tracking</h2>
       <MapContainer center={orderLocation} zoom={13} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

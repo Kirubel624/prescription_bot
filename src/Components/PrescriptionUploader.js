@@ -13,7 +13,7 @@ const PrescriptionUploader = () => {
   const [searchingMedicine, setSearchingMedicine] = useState(false);
   const [deliveryOption, setDeliveryOption] = useState(null);
   const [paymentOption, setPaymentOption] = useState(null);
-
+const [orderSummary, setOrderSummary] = useState({orderNumber:"",deliveryOption:"",paymentOption:""});
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
 const handleInputChange = (event) => {
@@ -51,6 +51,9 @@ const handleInputChange = (event) => {
 
   const handleDeliveryOptionChange = (value) => {
     setDeliveryOption(value);
+    setOrderSummary(
+      { ...orderSummary, orderNumber: "#12345", deliveryOption: value},
+    );
   };
 
   const handleConfirmDelivery = () => {
@@ -59,17 +62,19 @@ const handleInputChange = (event) => {
     setShowModal(false);
     setShowModalPayment(true)
     setPrescriptions([])
+   
+
   };
   const handlePaymentoption=(value)=>{
   setPaymentOption(value)
+  setOrderSummary({...orderSummary,paymentOption: value.target.value} );
       }
   const handlePaymentConfirmation=()=>{
 setShowModalPayment(false)
 setmapShow(true)
     setPrescriptions([])
-
   }
-
+console.log("order summary",orderSummary);
   return (
     <div>
       {/* <div className='flex items-end justify-end pt-10 pr-10'>
@@ -91,26 +96,40 @@ setmapShow(true)
       >
         የህኪም ማዘዣ ላክ
       </Button>
-      <List
-        dataSource={prescriptions}
-        renderItem={(prescription, index) => (
-          <List.Item  className='flex flex-col items-center justify-center'
-            key={index}
-            actions={[
-              <Button
-                className='bg-[#17CFC0] justify-center text-white flex items-center'
-                icon={<DeleteOutlined />}
-                onClick={() => handleRemove(index)}
-                type="link"
-              >
-                አጥፋ
-              </Button>
-            ]}
+      {prescriptions.length > 0 ? (
+  <List
+    dataSource={prescriptions}
+    renderItem={(prescription, index) => (
+      <List.Item
+        className='flex flex-col items-center justify-center'
+        key={index}
+        actions={[
+          <Button
+            className='bg-[#17CFC0] justify-center text-white flex items-center'
+            icon={<DeleteOutlined />}
+            onClick={() => handleRemove(index)}
+            type="link"
           >
-            <Image className='mb-4' src={prescription} alt="Prescription" width={200} />
-          </List.Item>
-        )}
-      />
+            አጥፋ
+          </Button>
+        ]}
+      >
+        <Image className='mb-4' src={prescription} alt="Prescription" width={200} />
+      </List.Item>
+    )}
+  />
+) : (
+  mapShow && (
+    <div className='flex w-full flex-col items-start justify-center pl-[24.5vw] pt-4 pb-4'>
+      <React.Fragment>
+        <div>ትዕዛዝ ቁጥር: {orderSummary.orderNumber}</div>
+        <div>ትዕዛዘ መቀበያ አማራጭ: {orderSummary.deliveryOption}</div>
+        <div>የክፈያ አማራጭ: {orderSummary.paymentOption}</div>
+      </React.Fragment>
+    </div>
+  )
+)}
+
       
       <Modal
         title="መድሃኒት ፈልግ"
@@ -128,7 +147,7 @@ setmapShow(true)
         ) : (
           <>
             <p>መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-</p>
-            <Select defaultValue="self-pickup" onChange={handleDeliveryOptionChange}>
+            <Select value="self-pickup" defaultValue="self-pickup" onChange={handleDeliveryOptionChange}>
               <Option value="self-pickup">በአካል መቀበል</Option>
               <Option value="delivery">ዴሊቨሪ</Option>
             </Select>

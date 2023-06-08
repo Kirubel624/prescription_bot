@@ -122,7 +122,7 @@ return (
     <div>
       <div className='flex items-end justify-end pt-10 pr-10'>
       <Button className='bg-[#17CFC0]' type='primary' onClick={handleLanguageToggle}>
-          {language === 'amharic' ? 'English' : 'አማርኛ'}
+          {language === 'amharic' ? 'አማርኛ' : 'English'}
         </Button>
       </div>
     <div className="mt-10 flex flex-col justify-between items-center">

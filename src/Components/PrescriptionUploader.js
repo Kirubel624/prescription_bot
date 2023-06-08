@@ -16,10 +16,16 @@ const PrescriptionUploader = () => {
 const [orderSummary, setOrderSummary] = useState({orderNumber:"",deliveryOption:"",paymentOption:""});
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
+const [language, setLanguage] = useState('amharic');
+
 const handleInputChange = (event) => {
-  const englishText = event.target.value;
-  const convertedText = convertToAmharic(englishText);
+  const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;
   setAmharicText(convertedText);
+};
+
+const handleLanguageToggle = () => {
+  const newLanguage = language === 'amharic' ? 'english' : 'amharic';
+  setLanguage(newLanguage);
 };
   const handleUpload = (file) => {
     const reader = new FileReader();
@@ -76,44 +82,55 @@ setmapShow(true)
   }
 
 
-const columns = [
+  const columns = [
+    {
+      title: language === 'amharic' ? 'ትዕዛዝ ቁጥር' : 'Order Number',
+      dataIndex: 'orderNumber',
+      key: 'orderNumber',
+    },
+    {
+      title: language === 'amharic' ? 'ትዕዛዘ መቀበያ አማራጭ' : 'Delivery Option',
+      dataIndex: 'deliveryOption',
+      key: 'deliveryOption',
+    },
+    {
+      title: language === 'amharic' ? 'የክፈያ አማራጭ' : 'Payment Option',
+      dataIndex: 'paymentOption',
+      key: 'paymentOption',
+    },
+  ];
+
+const dataExpt = [
   {
-    title: 'ትዕዛዝ ቁጥር',
-    dataIndex: 'orderNumber',
-    key: 'orderNumber',
-  },
-  {
-    title: 'ትዕዛዘ መቀበያ አማራጭ',
-    dataIndex: 'deliveryOption',
-    key: 'deliveryOption',
-  },
-  {
-    title: 'የክፈያ አማራጭ',
-    dataIndex: 'paymentOption',
-    key: 'paymentOption',
+    key: '1',
+    orderNumber:language=='amharic'?convertToAmharic(orderSummary.orderNumber):orderSummary.orderNumber,
+    deliveryOption: language=='amharic'?convertToAmharic(orderSummary.deliveryOption):orderSummary.deliveryOption,
+    paymentOption: language=='amharic'?convertToAmharic(orderSummary.paymentOption):orderSummary.paymentOption,
   },
 ];
-
 const data = [
   {
     key: '1',
-    orderNumber: orderSummary.orderNumber,
+    orderNumber:orderSummary.orderNumber,
     deliveryOption: orderSummary.deliveryOption,
     paymentOption: orderSummary.paymentOption,
   },
 ];
 console.log("Order summary",data);
-  return (
+console.log("Converted to amharic",convertToAmharic(orderSummary.orderNumber));
+return (
     <div>
-      {/* <div className='flex items-end justify-end pt-10 pr-10'>
-      <button className='' type="primary">Langauge</button>
-      </div> */}
+      <div className='flex items-end justify-end pt-10 pr-10'>
+      <Button className='bg-[#17CFC0]' type='primary' onClick={handleLanguageToggle}>
+          {language === 'amharic' ? 'English' : 'አማርኛ'}
+        </Button>
+      </div>
     <div className="mt-10 flex flex-col justify-between items-center">
       <Upload
         beforeUpload={handleUpload}
         showUploadList={false}
       >
-        <Button className='bg-[#17CFC0]' icon={<UploadOutlined />} type="primary">የህኪም ማዘዣ አስገባ</Button>
+        <Button className='bg-[#17CFC0]' icon={<UploadOutlined />} type="primary">{language === 'amharic' ? 'የህኪም ማዘዣ አስገባ' : 'upload prescription'}</Button>
       </Upload>
       <Button
       className='bg-[#17CFC0]'
@@ -122,7 +139,7 @@ console.log("Order summary",data);
         disabled={prescriptions?.length === 0}
         style={{ marginTop: '1rem' }}
       >
-        የህኪም ማዘዣ ላክ
+        {language === 'amharic' ? 'የህኪም ማዘዣ ላክ' : 'Send prescription'}
       </Button>
       {prescriptions.length > 0 ? (
   <List
@@ -138,7 +155,7 @@ console.log("Order summary",data);
             onClick={() => handleRemove(index)}
             type="link"
           >
-            አጥፋ
+            {language === 'amharic' ? 'አጥፋ' : 'Remove'} 
           </Button>
         ]}
       >
@@ -156,7 +173,7 @@ console.log("Order summary",data);
 
       
       <Modal
-        title="መድሃኒት ፈልግ"
+        title={language === 'amharic' ? 'መድሃኒት ፈልግ' : 'Send prescription'}
         visible={showModal}
         onCancel={() => setShowModal(false)}
         onOk={handleConfirmDelivery}
@@ -166,20 +183,22 @@ console.log("Order summary",data);
         {searchingMedicine ? (
           <div className="searching-medicine-container">
             <Spin size="large" />
-            <p>{prescriptions.length} መድሃኒት በመፈለግ ላይ...</p>
+            <p>           {language === 'amharic' ? `${prescriptions.length} መድሃኒት በመፈለግ ላይ...` : `Searching ${prescriptions.length} Medicine`} 
+ </p>
           </div>
         ) : (
           <>
-            <p>መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-</p>
-            <Select defaultValue="በአካል መቀበል" onChange={handleDeliveryOptionChange}>
-              <Option value="በአካል መቀበል">በአካል መቀበል</Option>
-              <Option value="ዴሊቨሪ">ዴሊቨሪ</Option>
+            <p>            {language === 'amharic' ? 'መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-' : 'Medicine found! Choose delivery option:'} አጥፋ
+</p>
+            <Select defaultValue={language=='amharic'?`በአካል መቀበል`:'Self pickup'} onChange={handleDeliveryOptionChange}>
+              <Option value={language=='amharic'?`በአካል መቀበል`:'Self pickup'}>{language=='amharic'?`በአካል መቀበል`:'Self pickup'}</Option>
+              <Option value={language=='amharic'?`ዴሊቨሪ`:'Delivery'}>{language=='amharic'?`ዴሊቨሪ`:'Delivery'}</Option>
             </Select>
           </>
         )}
       </Modal>
       <Modal
-        title="ክፍያ አማራጭ"
+        title={language=='amharic'?`ክፍያ አማራጭ`:'Payment options'}
         visible={showModalPayment}
         onCancel={() => setShowModalPayment(false)}
         onOk={handlePaymentConfirmation}
@@ -188,16 +207,16 @@ console.log("Order summary",data);
       >
         <Radio.Group className="flex flex-wrap justify-evenly items-center" onChange={handlePaymentoption}>
           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/>
-          <Radio className='flex flex-row' value="ቴሌብር">ቴሌብር</Radio></div>
+          <Radio className='flex flex-row' value={language=='amharic'?`ቴሌብር`:'Telebirr'}>{language=='amharic'?`ቴሌብር`:'Telebirr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/>
-           <Radio value="ሲቢኢ ቢር">ሲቢኢ ቢር</Radio></div>
+           <Radio value={language=='amharic'?`ሲቢኢ ቢር`:'CBE Birr'}>{language=='amharic'?`ሲቢኢ ቢር`:'CBE Birr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/>
-           <Radio value="ኢ-ቢር">ኢ-ቢር</Radio></div>
+           <Radio value={language=='amharic'?`ኢ-ቢር`:'e-birr'}>{language=='amharic'?`ኢ-ቢር`:'e-birr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={65} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207125/op4nimn67dnvgoj0ocvr.png"/>
-           <Radio value="ቻፓ">ቻፓ</Radio></div>
+           <Radio value={language=='amharic'?`ቻፓ`:'Chapa'}>{language=='amharic'?`ቻፓ`:'Chapa'}</Radio></div>
         </Radio.Group>
       </Modal>
-     {mapShow&& <OrderTrackingApp/>}
+     {mapShow&& <OrderTrackingApp language={language}/>}
     </div></div>
   );
 };

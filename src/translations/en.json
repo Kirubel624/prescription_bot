@@ -16,6 +16,7 @@
   "prescriptionRemovedSuccess": "Prescription removed successfully.",
   "orderNumber": "Order Number",
   "deliveryOption": "Delivery Option",
-  "paymentOption": "Chosen Payment Option"
+  "paymentOption": "Chosen Payment Option",
+  "orderTracking":"Order Tracking"
 
 }

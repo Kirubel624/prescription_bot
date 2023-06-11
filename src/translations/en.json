@@ -1,5 +1,21 @@
-{
-    "welcomeMessage": "Welcome to My App",
-    "description": "This is the description in English."
-  }
-  
+{"uploadPrescription":"Upload prescription",
+  "sendPrescription": "Send Prescription",
+  "remove":"Remove",
+  "searchMedicine": "Search Medicine",
+  "searching": "Searching",
+  "medicine":"Medicine",
+  "medicineFound":"Medicine found! Choose delivery option:",
+  "selfPickUp":"Self Pickup",
+  "delivery":"Delivery",
+  "paymentOptions":"Payment Options",
+  "teleBirr":"TeleBirr",
+  "cbeBirr":"CBE-Birr",
+  "eBirr":"e-birr",
+  "chapa":"Chapa",
+  "prescriptionUploadedSuccess": "Prescription uploaded successfully.",
+  "prescriptionRemovedSuccess": "Prescription removed successfully.",
+  "orderNumber": "Order Number",
+  "deliveryOption": "Delivery Option",
+  "paymentOption": "Chosen Payment Option"
+
+}

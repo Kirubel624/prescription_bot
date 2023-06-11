@@ -1,11 +1,30 @@
 import React, { useState } from 'react';
 import { Upload, Button, List, Image, message, Modal, Select, Spin, Row, Col, Switch, Radio, Table } from 'antd';
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
-import OrderTrackingApp from './Maptracking';
+import OrderTrackingApp from './Maptrackingone';
+import { useTranslation, initReactI18next } from 'react-i18next';
+import i18n from 'i18next';
+
+// Import your language files
+import englishTranslations from '../../translations/en.json';
+import amharicTranslations from '../../translations/am.json';
+import affanOromoTranslations from '../../translations/om.json'
+import OrderTrackingAppOne from './Maptrackingone';
+
+// Initialize i18next with the translations
+i18n.use(initReactI18next).init({
+  resources: {
+    en: { translation:englishTranslations },
+    am: { translation:amharicTranslations },
+    om:{translation:affanOromoTranslations} 
+  },
+  lng: 'en',
+  fallbackLng: 'en',
+});
 // import { convertToAmharic } from "amharic-converter";
 const { Option } = Select;
 
-const PrescriptionUploader = () => {
+const PrescriptionUpload = () => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModalPayment, setShowModalPayment] = useState(false);
@@ -17,7 +36,16 @@ const [orderSummary, setOrderSummary] = useState({orderNumber:"",deliveryOption:
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
 const [language, setLanguage] = useState('amharic');
+const [selectedLanguage, setSelectedLanguage] = useState('')
+// Initialize i18next with the translations
 
+const { t } = useTranslation();
+
+  const handleLanguageChange = (values) => {
+   setSelectedLanguage(values);
+    console.log("&&&&&&&&&&&&&&&&&&&&&selected langauge %%%%%%%%%%%",values)
+    i18n.changeLanguage(values);
+  };
 // const handleInputChange = (event) => {
 //   const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;
 //   setAmharicText(convertedText);
@@ -84,7 +112,7 @@ const handleLanguageToggle = (value) => {
       const newPrescriptions = [...prescriptions];
       newPrescriptions.push(reader.result);
       setPrescriptions(newPrescriptions);
-      message.success('Prescription uploaded successfully!');
+      message.success(`${t('prescriptionUploadedSuccess')}`);
     };
     reader.readAsDataURL(file);
   };
@@ -93,7 +121,7 @@ const handleLanguageToggle = (value) => {
     const newPrescriptions = [...prescriptions];
     newPrescriptions.splice(index, 1);
     setPrescriptions(newPrescriptions);
-    message.success('Prescription removed successfully!');
+    message.success(`${t('prescriptionRemovedSuccess')}`);
   };
 
   const handleSendPrescription = () => {
@@ -135,17 +163,17 @@ setmapShow(true)
 
   const columns = [
     {
-      title: language === 'amharic' ? 'ትዕዛዝ ቁጥር' : 'Order Number',
+      title: `${t('orderNumber')}`,
       dataIndex: 'orderNumber',
       key: 'orderNumber',
     },
     {
-      title: language === 'amharic' ? 'ትዕዛዘ መቀበያ አማራጭ' : 'Delivery Option',
+      title:  `${t('deliveryOption')}`,
       dataIndex: 'deliveryOption',
       key: 'deliveryOption',
     },
     {
-      title: language === 'amharic' ? 'የክፈያ አማራጭ' : 'Payment Option',
+      title: `${t('paymentOption')}`,
       dataIndex: 'paymentOption',
       key: 'paymentOption',
     },
@@ -155,8 +183,8 @@ const data = [
   {
     key: '1',
     orderNumber:orderSummary.orderNumber,
-    deliveryOption: language=='amharic'?convertToAmharicDelivery(orderSummary.deliveryOption):convertToEnglishDelivery(orderSummary.deliveryOption),
-    paymentOption: language=='amharic'?convertToAmharicPayment(orderSummary.paymentOption):convertToEnglishPayment(orderSummary.paymentOption),
+    deliveryOption: orderSummary.deliveryOption,
+    paymentOption: orderSummary.paymentOption
   },
 ];
 const datas = [
@@ -172,10 +200,16 @@ console.log("Converted to amharic",convertToAmharic(orderSummary.deliveryOption)
 return (
     <div>
       <div className='flex items-end justify-end pt-10 pr-10'>
-      <Select defaultValue="አማርኛ" onChange={handleLanguageToggle}>
+      {/* <Select defaultValue="አማርኛ" onChange={handleLanguageToggle}>
   <Option value="english">አማርኛ</Option>
   <Option value="amharic">English</Option>
   <Option value="oromo">Affan oromo</Option>
+
+</Select> */}
+<Select defaultValue='en' onChange={handleLanguageChange}>
+  <Option value="am">አማርኛ</Option>
+  <Option value="en">English</Option>
+  <Option value="om">Affan oromo</Option>
 
 </Select>
       </div>
@@ -184,7 +218,7 @@ return (
         beforeUpload={handleUpload}
         showUploadList={false}
       >
-        <Button className='bg-[#17CFC0]' icon={<UploadOutlined />} type="primary">{language === 'amharic' ? 'የህኪም ማዘዣ አስገባ' : 'upload prescription'}</Button>
+        <Button className='bg-[#17CFC0]' icon={<UploadOutlined />} type="primary">{t('uploadPrescription')}</Button>
       </Upload>
       <Button
       className='bg-[#17CFC0]'
@@ -193,7 +227,7 @@ return (
         disabled={prescriptions?.length === 0}
         style={{ marginTop: '1rem' }}
       >
-        {language === 'amharic' ? 'የህኪም ማዘዣ ላክ' : 'Send prescription'}
+        {t('sendPrescription')}
       </Button>
       {prescriptions.length > 0 ? (
   <List
@@ -209,7 +243,8 @@ return (
             onClick={() => handleRemove(index)}
             type="link"
           >
-            {language === 'amharic' ? 'አጥፋ' : 'Remove'} 
+                   {t('remove')}
+
           </Button>
         ]}
       >
@@ -227,7 +262,7 @@ return (
 
       
       <Modal
-        title={language === 'amharic' ? 'መድሃኒት ፈልግ' : 'Search Medicine'}
+        title={t('searchMedicine')}
         visible={showModal}
         onCancel={() => setShowModal(false)}
         onOk={handleConfirmDelivery}
@@ -237,22 +272,27 @@ return (
         {searchingMedicine ? (
           <div className="searching-medicine-container">
             <Spin size="large" />
-            <p>           {language === 'amharic' ? `${prescriptions.length} መድሃኒት በመፈለግ ላይ...` : `Searching ${prescriptions.length} Medicine`} 
+            <p>     { selectedLanguage === 'am'
+    ? `${prescriptions.length}  ${t('searching')}`
+    : selectedLanguage === 'om'
+    ? `${prescriptions.length} ${t('searching')}`
+    : `${t('searching')} ${prescriptions.length} ${t('medicine')}` }
  </p>
           </div>
         ) : (
           <>
-            <p>            {language === 'amharic' ? 'መድሃኒት ተገኝቷል! የማድረስ አማራጭ ይምረጡ፡-' : 'Medicine found! Choose delivery option:'}
+            <p>                    {t('medicineFound')}
+
 </p>
-            <Select defaultValue={language=='amharic'?`በአካል መቀበል`:'Self pickup'} onChange={handleDeliveryOptionChange}>
-              <Option value={language=='amharic'?`በአካል መቀበል`:'Self pickup'}>{language=='amharic'?`በአካል መቀበል`:'Self pickup'}</Option>
-              <Option value={language=='amharic'?`ዴሊቨሪ`:'Delivery'}>{language=='amharic'?`ዴሊቨሪ`:'Delivery'}</Option>
+            <Select defaultValue={t('selfPickUp')} onChange={handleDeliveryOptionChange}>
+              <Option value={t('selfPickUp')}>{t('selfPickUp')}</Option>
+              <Option value={t('delivery')}>{t('delivery')}</Option>
             </Select>
           </>
         )}
       </Modal>
       <Modal
-        title={language=='amharic'?`ክፍያ አማራጭ`:'Payment options'}
+        title={t('paymentOptions')}
         visible={showModalPayment}
         onCancel={() => setShowModalPayment(false)}
         onOk={handlePaymentConfirmation}
@@ -261,18 +301,18 @@ return (
       >
         <Radio.Group className="flex flex-wrap justify-evenly items-center" onChange={handlePaymentoption}>
           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/>
-          <Radio className='flex flex-row' value={language=='amharic'?`ቴሌብር`:'Telebirr'}>{language=='amharic'?`ቴሌብር`:'Telebirr'}</Radio></div>
+          <Radio className='flex flex-row' value={t('teleBirr')}>{t('teleBirr')}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/>
-           <Radio value={language=='amharic'?`ሲቢኢ ብር`:'CBE Birr'}>{language=='amharic'?`ሲቢኢ ብር`:'CBE Birr'}</Radio></div>
+           <Radio value={t('cbeBirr')}>{t('cbeBirr')}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/>
-           <Radio value={language=='amharic'?`ኢ-ብር`:'e-birr'}>{language=='amharic'?`ኢ-ብር`:'e-birr'}</Radio></div>
+           <Radio value={t('eBirr')}>{t('eBirr')}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={65} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207125/op4nimn67dnvgoj0ocvr.png"/>
-           <Radio value={language=='amharic'?`ቻፓ`:'Chapa'}>{language=='amharic'?`ቻፓ`:'Chapa'}</Radio></div>
+           <Radio value={t('chapa')}>{t('chapa')}</Radio></div>
         </Radio.Group>
       </Modal>
-     {mapShow&& <OrderTrackingApp language={language}/>}
+     {mapShow&& <OrderTrackingAppOne language={language}/>}
     </div></div>
   );
 };
 
-export default PrescriptionUploader;
+export default PrescriptionUpload;

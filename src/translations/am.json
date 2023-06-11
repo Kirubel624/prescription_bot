@@ -1,5 +1,20 @@
-{
-    "welcomeMessage": "ወደ አካባቢዎ ይምረጡ",
-    "description": "ይህ አካባቢዎን በአማርኛ መግለጫ ነው."
-  }
-  
+{ "uploadPrescription":"የህኪም ማዘዣ አስገባ",
+"sendPrescription": "የህኪም ማዘዣ ላክ",
+"remove":"አጥፋ",
+"searchMedicine": "መድሃኒት ፈልግ",
+"searching": "መድሃኒት በመፈለግ ላይ...",
+"medicine":"",
+"medicineFound":"መድሃኒት ተገኝቷል! የመላኪያ አማራጮችን ይምረጡ፡-",
+"selfPickUp":"በአካል መቀበል",
+"delivery":"ዴሊቨሪ",
+"paymentOptions":"ክፍያ አማራጭ",
+"teleBirr":"ቴሌብር",
+"cbeBirr":"ሲቢኢ ብር",
+"eBirr":"ኢ-ብር",
+"chapa":"ቻፓ",
+"prescriptionUploadedSuccess": "የህኪም ማዘዣ በተሳካ ሁኔታ ተልኳል",
+"prescriptionRemovedSuccess": "የህኪም ማዘዣ በተሳካ ሁኔታ ጠፍቷል",
+"orderNumber": "ትዕዛዝ ቁጥር",
+"deliveryOption": "ትዕዛዘ መቀበያ አማራጭ",
+"paymentOption": "የተመረጠው የክፈያ አማራጭ"
+}

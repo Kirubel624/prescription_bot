@@ -16,5 +16,6 @@
 "prescriptionRemovedSuccess": "የህኪም ማዘዣ በተሳካ ሁኔታ ጠፍቷል",
 "orderNumber": "ትዕዛዝ ቁጥር",
 "deliveryOption": "ትዕዛዘ መቀበያ አማራጭ",
-"paymentOption": "የተመረጠው የክፈያ አማራጭ"
+"paymentOption": "የተመረጠው የክፈያ አማራጭ",
+"orderTracking":"ትዕዛዘ መከታተያ"
 }

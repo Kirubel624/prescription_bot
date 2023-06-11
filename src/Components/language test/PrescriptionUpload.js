@@ -310,7 +310,7 @@ return (
            <Radio value={t('chapa')}>{t('chapa')}</Radio></div>
         </Radio.Group>
       </Modal>
-     {mapShow&& <OrderTrackingAppOne language={language}/>}
+     {mapShow&& <OrderTrackingAppOne language={selectedLanguage}/>}
     </div></div>
   );
 };

@@ -19,7 +19,7 @@ export const convertToAffanOromoDelivery = (value) => {
     } if (value === 'ሲቢኢ ብር') {
       return 'CBE Birr';
     } if (value === 'ቴሌብር') {
-      return 'Telebirr';
+      return 'telebirr';
     }
     return value;
   };

@@ -46,7 +46,7 @@ const convertToAmharicPayment = (value) => {
     return 'ቻፓ';
   } if (value === 'CBE Birr') {
     return 'ሲቢኢ ብር';
-  } if (value === 'Telebirr') {
+  } if (value === 'telebirr') {
     return 'ቴሌብር';
   }
   return value;
@@ -69,7 +69,7 @@ const convertToEnglishPayment = (value) => {
   } if (value === 'ሲቢኢ ብር') {
     return 'CBE Birr';
   } if (value === 'ቴሌብር') {
-    return 'Telebirr';
+    return 'telebirr';
   }
   return value;
 };
@@ -261,7 +261,7 @@ return (
       >
         <Radio.Group className="flex flex-wrap justify-evenly items-center" onChange={handlePaymentoption}>
           <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206533/kccmvgw7iqgkkf0ec1b6.png"/>
-          <Radio className='flex flex-row' value={language=='amharic'?`ቴሌብር`:'Telebirr'}>{language=='amharic'?`ቴሌብር`:'Telebirr'}</Radio></div>
+          <Radio className='flex flex-row' value={language=='amharic'?`ቴሌብር`:'telebirr'}>{language=='amharic'?`ቴሌብር`:'telebirr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={45} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686206912/nqkilybn6ihwhbgj6gqe.webp"/>
            <Radio value={language=='amharic'?`ሲቢኢ ብር`:'CBE Birr'}>{language=='amharic'?`ሲቢኢ ብር`:'CBE Birr'}</Radio></div>
            <div className='flex flex-col justify-center items-center'><img width={85} src="https://res.cloudinary.com/dvqawl4nw/image/upload/v1686207005/ipu0zkvizwbfnjyfiwiy.png"/>

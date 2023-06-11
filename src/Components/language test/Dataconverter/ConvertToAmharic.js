@@ -19,7 +19,7 @@ export  const convertToAmharicPayment = (value) => {
       return 'ቻፓ';
     } if (value === 'CBE Birr') {
       return 'ሲቢኢ-ብር';
-    } if (value === 'Telebirr') {
+    } if (value === 'telebirr') {
       return 'ቴሌብር';
     }
     return value;

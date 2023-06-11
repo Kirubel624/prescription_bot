@@ -4,6 +4,9 @@ import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import OrderTrackingApp from './Maptrackingone';
 import { useTranslation, initReactI18next } from 'react-i18next';
 import i18n from 'i18next';
+import { convertToAmharicDelivery,convertToAmharicPayment } from './Dataconverter/ConvertToAmharic';
+import { convertToEnglishDelivery,convertToEnglishPayment } from './Dataconverter/ConvertToEnglish';
+import { convertToAffanOromoDelivery,convertToAffanOromoPayment } from './Dataconverter/ConvertToAffanOromo';
 
 // Import your language files
 import englishTranslations from '../../translations/en.json';
@@ -21,7 +24,6 @@ i18n.use(initReactI18next).init({
   lng: 'en',
   fallbackLng: 'en',
 });
-// import { convertToAmharic } from "amharic-converter";
 const { Option } = Select;
 
 const PrescriptionUpload = () => {
@@ -46,10 +48,7 @@ const { t } = useTranslation();
     console.log("&&&&&&&&&&&&&&&&&&&&&selected langauge %%%%%%%%%%%",values)
     i18n.changeLanguage(values);
   };
-// const handleInputChange = (event) => {
-//   const convertedText = language === 'amharic' ? convertToAmharic(event.target.value) : event.target.value;
-//   setAmharicText(convertedText);
-// };
+
 const convertToAmharic = (value)=>{
 if(value=="Delivery"&&language=="amharic"){
   setOrderSummary({...orderSummary, deliveryOption:"ዴሊቨሪ"})
@@ -58,54 +57,7 @@ if(value=="e-birr"&&language=="amharic"){
   setOrderSummary({...orderSummary, paymentOption:"ኢ-ብር"})
 }
 }
-const convertToAmharicDelivery = (value) => {
-  if (value === 'Delivery') {
-    return 'ዴሊቨሪ';
-  }if (value === 'Self pickup') {
-    return 'በአካል መቀበል';
-  }
-  return value;
-};
 
-const convertToAmharicPayment = (value) => {
-  if (value === 'e-birr') {
-    return 'ኢ-ብር';
-  } if (value === 'Chapa') {
-    return 'ቻፓ';
-  } if (value === 'CBE Birr') {
-    return 'ሲቢኢ ብር';
-  } if (value === 'Telebirr') {
-    return 'ቴሌብር';
-  }
-  return value;
-};
-
-const convertToEnglishDelivery = (value) => {
-  if (value === 'ዴሊቨሪ') {
-    return 'Delivery';
-  }if (value === 'በአካል መቀበል') {
-    return 'Self pickup';
-  }
-  return value;
-};
-
-const convertToEnglishPayment = (value) => {
-  if (value === 'ኢ-ብር') {
-    return 'e-birr';
-  }if (value === 'ቻፓ') {
-    return 'Chapa';
-  } if (value === 'ሲቢኢ ብር') {
-    return 'CBE Birr';
-  } if (value === 'ቴሌብር') {
-    return 'Telebirr';
-  }
-  return value;
-};
-const handleLanguageToggle = (value) => {
-  const newLanguage = value === 'amharic' ? 'english' : 'amharic';
-  console.log("new language",newLanguage);
-  setLanguage(newLanguage);
-};
   const handleUpload = (file) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -136,6 +88,7 @@ const handleLanguageToggle = (value) => {
 
   const handleDeliveryOptionChange = (value) => {
     setDeliveryOption(value);
+    console.log('setDeliveryOption$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', value);
     setOrderSummary(
       { ...orderSummary, orderNumber: "#12345", deliveryOption: value},
     );
@@ -151,6 +104,7 @@ const handleLanguageToggle = (value) => {
 
   };
   const handlePaymentoption=(value)=>{
+    console.log('$$$$$$$$$$$$$$$$$$$Order summary in handle paymetn option$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', orderSummary);
   setPaymentOption(value)
   setOrderSummary({...orderSummary,paymentOption: value.target.value} );
       }
@@ -183,8 +137,15 @@ const data = [
   {
     key: '1',
     orderNumber:orderSummary.orderNumber,
-    deliveryOption: orderSummary.deliveryOption,
-    paymentOption: orderSummary.paymentOption
+    deliveryOption: 
+    selectedLanguage=='am'?convertToAmharicDelivery(orderSummary.deliveryOption)
+    :selectedLanguage=='en'?convertToEnglishDelivery(orderSummary.deliveryOption)
+    :convertToAffanOromoDelivery(orderSummary.deliveryOption),
+    paymentOption:
+     selectedLanguage=='am'?convertToAmharicPayment(orderSummary.paymentOption)
+     :selectedLanguage=='en'?convertToEnglishPayment(orderSummary.paymentOption)
+     :convertToAffanOromoPayment(orderSummary.paymentOption)
+     ,
   },
 ];
 const datas = [
@@ -195,17 +156,9 @@ const datas = [
     paymentOption: orderSummary.paymentOption,
   },
 ];
-console.log("Order summary",data);
-console.log("Converted to amharic",convertToAmharic(orderSummary.deliveryOption));
 return (
     <div>
       <div className='flex items-end justify-end pt-10 pr-10'>
-      {/* <Select defaultValue="አማርኛ" onChange={handleLanguageToggle}>
-  <Option value="english">አማርኛ</Option>
-  <Option value="amharic">English</Option>
-  <Option value="oromo">Affan oromo</Option>
-
-</Select> */}
 <Select defaultValue='en' onChange={handleLanguageChange}>
   <Option value="am">አማርኛ</Option>
   <Option value="en">English</Option>

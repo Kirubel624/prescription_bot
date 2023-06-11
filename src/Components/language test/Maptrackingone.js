@@ -9,12 +9,6 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 import { useTranslation, initReactI18next } from 'react-i18next';
-import i18n from 'i18next';
-
-// Import your language files
-import englishTranslations from '../../translations/en.json';
-import amharicTranslations from '../../translations/am.json';
-import affanOromoTranslations from '../../translations/om.json'
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -30,7 +24,7 @@ const OrderTrackingAppOne = ({language}) => {
 const [languageS, setLanguageS] = useState(language); 
  const { t } = useTranslation();
 // setLanguageS(language)
-console.log("lanaguage in map tracking", language)
+// console.log("lanaguage in map tracking", language)
   useEffect(() => {
     const interval = setInterval(() => {
       // Simulate movement of the order marker

@@ -38,25 +38,16 @@ const [orderSummary, setOrderSummary] = useState({orderNumber:"",deliveryOption:
 const [mapShow,setmapShow]=useState(false)
 const [amharicText, setAmharicText] = useState("");
 const [language, setLanguage] = useState('amharic');
-const [selectedLanguage, setSelectedLanguage] = useState('')
+const [selectedLanguage, setSelectedLanguage] = useState('en')
 // Initialize i18next with the translations
 
 const { t } = useTranslation();
 
   const handleLanguageChange = (values) => {
    setSelectedLanguage(values);
-    console.log("&&&&&&&&&&&&&&&&&&&&&selected langauge %%%%%%%%%%%",values)
+
     i18n.changeLanguage(values);
   };
-
-const convertToAmharic = (value)=>{
-if(value=="Delivery"&&language=="amharic"){
-  setOrderSummary({...orderSummary, deliveryOption:"ዴሊቨሪ"})
-}
-if(value=="e-birr"&&language=="amharic"){
-  setOrderSummary({...orderSummary, paymentOption:"ኢ-ብር"})
-}
-}
 
   const handleUpload = (file) => {
     const reader = new FileReader();
